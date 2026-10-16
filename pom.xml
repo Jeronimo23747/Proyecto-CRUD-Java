@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- ============================================================
+         Sistema de Gestión de Estudiantes - CRUD reactivo en memoria
+         ============================================================ -->
+    <groupId>com.app</groupId>
+    <artifactId>crud-estudiantes-javafx</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <name>Sistema de Gestion de Estudiantes</name>
+    <description>CRUD de escritorio con JavaFX, FXML, CSS y patrón MVC. Datos en memoria (ArrayList + ObservableList).</description>
+
+    <properties>
+        <!-- Codificación: imprescindible para tildes y eñes en código, FXML y CSS -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- Versión mínima de Java requerida (JavaFX 21 necesita JDK 17 o superior) -->
+        <maven.compiler.release>17</maven.compiler.release>
+
+        <!-- Versiones de dependencias y plugins -->
+        <javafx.version>21.0.6</javafx.version>
+        <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
+        <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
+        <maven.resources.plugin.version>3.3.1</maven.resources.plugin.version>
+
+        <!-- Clase principal de la aplicación (Lanzador desacoplado) -->
+        <main.class>com.app.Launcher</main.class>
+    </properties>
+
+    <dependencies>
+        <!-- Controles de UI: TableView, TextField, ComboBox, Button, etc. -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+
+        <!-- Carga de vistas declarativas FXML (compatible con Scene Builder) -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Compilador de Java -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <release>${maven.compiler.release}</release>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <compilerArgs>
+                        <arg>-Xlint:unchecked</arg>
+                        <arg>-Xlint:deprecation</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+
+            <!-- Copia de recursos (FXML y CSS) respetando UTF-8 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven.resources.plugin.version}</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+
+            <!-- Ejecución directa con: mvn clean javafx:run -->
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>${javafx.maven.plugin.version}</version>
+                <configuration>
+                    <mainClass>${main.class}</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

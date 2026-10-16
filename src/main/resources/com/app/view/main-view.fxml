@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="820.0" prefWidth="1340.0" styleClass="root-pane" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.controller.MainController">
+
+    <!-- ================================================================== -->
+    <!-- HEADER: TÍTULO Y MÉTRICAS / KPIS EN VIVO                           -->
+    <!-- ================================================================== -->
+    <top>
+        <VBox spacing="14.0" styleClass="header-container" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="16.0" left="28.0" right="28.0" top="18.0" />
+            </padding>
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="20.0">
+                    <children>
+                        <VBox spacing="3.0" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label styleClass="app-title" text="Sistema de Gestión y Organizador de Estudiantes" />
+                                <Label styleClass="app-subtitle" text="Organización Académica por Programa y Semestre · Arquitectura MVC · Reactividad en Memoria" />
+                            </children>
+                        </VBox>
+
+                        <!-- TARJETAS DE MÉTRICAS / DASHBOARD EN TIEMPO REAL -->
+                        <HBox spacing="14.0">
+                            <children>
+                                <VBox styleClass="kpi-card, kpi-total">
+                                    <children>
+                                        <Label styleClass="kpi-title" text="ESTUDIANTES EN VISTA" />
+                                        <Label fx:id="lblTotalEstudiantes" styleClass="kpi-value" text="0" />
+                                    </children>
+                                </VBox>
+                                <VBox styleClass="kpi-card, kpi-activos">
+                                    <children>
+                                        <Label styleClass="kpi-title" text="ACTIVOS" />
+                                        <Label fx:id="lblEstudiantesActivos" styleClass="kpi-value" text="0" />
+                                    </children>
+                                </VBox>
+                                <VBox styleClass="kpi-card, kpi-promedio">
+                                    <children>
+                                        <Label styleClass="kpi-title" text="PROMEDIO COHORTE" />
+                                        <Label fx:id="lblPromedioGeneral" styleClass="kpi-value" text="0.00" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </top>
+
+    <!-- ================================================================== -->
+    <!-- CONTENIDO CENTRAL: FORMULARIO CRUD (IZQ) Y ORGANIZADOR (DER)       -->
+    <!-- ================================================================== -->
+    <center>
+        <HBox spacing="20.0" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="20.0" left="24.0" right="24.0" top="12.0" />
+            </padding>
+            <children>
+
+                <!-- PANEL IZQUIERDO: FORMULARIO DE GESTIÓN -->
+                <VBox maxWidth="390.0" minWidth="360.0" spacing="12.0" styleClass="card-container" HBox.hgrow="NEVER">
+                    <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="18.0" />
+                    </padding>
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                            <children>
+                                <Label styleClass="section-title" text="Gestión del Estudiante" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Label fx:id="lblModoFormulario" styleClass="label-modo, modo-creacion" text="Modo: Nuevo Registro" />
+                            </children>
+                        </HBox>
+
+                        <Separator styleClass="custom-separator" />
+
+                        <!-- Mensaje de feedback visual (éxito o error) -->
+                        <Label fx:id="lblMensajeFeedback" maxWidth="1.7976931348623157E308" styleClass="lbl-feedback, feedback-neutral" text="Complete los campos para registrar un nuevo estudiante." wrapText="true" />
+
+                        <!-- Campo: Código -->
+                        <VBox spacing="3.0">
+                            <children>
+                                <Label styleClass="field-label" text="Código Estudiantil *" />
+                                <TextField fx:id="txtCodigo" promptText="Ej: EST-015 (Formato: AAA-000)" styleClass="custom-text-field" />
+                                <Label fx:id="errCodigo" managed="false" styleClass="error-message" text="" visible="false" />
+                            </children>
+                        </VBox>
+
+                        <!-- Campo: Nombre -->
+                        <VBox spacing="3.0">
+                            <children>
+                                <Label styleClass="field-label" text="Nombre Completo *" />
+                                <TextField fx:id="txtNombre" promptText="Ej: Mariana López Ruiz" styleClass="custom-text-field" />
+                                <Label fx:id="errNombre" managed="false" styleClass="error-message" text="" visible="false" />
+                            </children>
+                        </VBox>
+
+                        <!-- Campo: Programa Académico -->
+                        <VBox spacing="3.0">
+                            <children>
+                                <Label styleClass="field-label" text="Programa Académico (Carrera) *" />
+                                <ComboBox fx:id="cmbCarrera" maxWidth="1.7976931348623157E308" promptText="Seleccione un programa..." styleClass="custom-combo-box" />
+                                <Label fx:id="errCarrera" managed="false" styleClass="error-message" text="" visible="false" />
+                            </children>
+                        </VBox>
+
+                        <!-- Fila doble: Semestre y Promedio -->
+                        <HBox spacing="12.0">
+                            <children>
+                                <VBox spacing="3.0" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label styleClass="field-label" text="Semestre *" />
+                                        <ComboBox fx:id="cmbSemestre" maxWidth="1.7976931348623157E308" promptText="Semestre..." styleClass="custom-combo-box" />
+                                        <Label fx:id="errSemestre" managed="false" styleClass="error-message" text="" visible="false" />
+                                    </children>
+                                </VBox>
+                                <VBox spacing="3.0" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label styleClass="field-label" text="Promedio (0.0 - 5.0) *" />
+                                        <TextField fx:id="txtPromedio" promptText="Ej: 4.50" styleClass="custom-text-field" />
+                                        <Label fx:id="errPromedio" managed="false" styleClass="error-message" text="" visible="false" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+
+                        <!-- Campo: Estado Académico -->
+                        <VBox spacing="3.0">
+                            <children>
+                                <Label styleClass="field-label" text="Estado Académico *" />
+                                <ComboBox fx:id="cmbEstado" maxWidth="1.7976931348623157E308" styleClass="custom-combo-box" />
+                                <Label fx:id="errEstado" managed="false" styleClass="error-message" text="" visible="false" />
+                            </children>
+                        </VBox>
+
+                        <Region VBox.vgrow="ALWAYS" />
+
+                        <Separator styleClass="custom-separator" />
+
+                        <!-- BOTONES DE ACCIÓN CRUD -->
+                        <VBox spacing="10.0">
+                            <children>
+                                <Button fx:id="btnGuardar" defaultButton="true" maxWidth="1.7976931348623157E308" onAction="#onGuardar" styleClass="button, btn-guardar" text="Guardar Estudiante" />
+                                <HBox spacing="10.0">
+                                    <children>
+                                        <Button fx:id="btnLimpiar" cancelButton="true" maxWidth="1.7976931348623157E308" onAction="#onLimpiar" styleClass="button, btn-secundario" text="Limpiar Formulario" HBox.hgrow="ALWAYS" />
+                                        <Button fx:id="btnEliminar" disable="true" maxWidth="1.7976931348623157E308" onAction="#onEliminar" styleClass="button, btn-peligro" text="Eliminar" HBox.hgrow="ALWAYS" />
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+                    </children>
+                </VBox>
+
+                <!-- PANEL DERECHO: ORGANIZADOR POR PROGRAMA Y SEMESTRE -->
+                <VBox spacing="12.0" styleClass="card-container" HBox.hgrow="ALWAYS">
+                    <padding>
+                        <Insets bottom="16.0" left="20.0" right="20.0" top="18.0" />
+                    </padding>
+                    <children>
+
+                        <!-- BARRA SUPERIOR DE FILTROS DEL ORGANIZADOR -->
+                        <HBox alignment="CENTER_LEFT" spacing="12.0">
+                            <children>
+                                <Label styleClass="section-title" text="Organizador Académico" />
+                                <Region HBox.hgrow="ALWAYS" />
+
+                                <!-- Selector de Programa -->
+                                <ComboBox fx:id="cmbFiltroPrograma" prefWidth="240.0" styleClass="custom-combo-box, filter-combo-box" />
+
+                                <!-- Selector de Semestre -->
+                                <ComboBox fx:id="cmbFiltroSemestre" prefWidth="175.0" styleClass="custom-combo-box, filter-combo-box" />
+
+                                <!-- Buscador en vivo -->
+                                <TextField fx:id="txtBuscar" prefWidth="220.0" promptText="🔍 Buscar por nombre, código..." styleClass="custom-text-field, filter-search-field" />
+
+                                <!-- Botón Limpiar Filtros -->
+                                <Button fx:id="btnLimpiarFiltros" onAction="#onLimpiarFiltros" styleClass="button, btn-secundario, btn-filtro-reset" text="Restablecer" />
+                            </children>
+                        </HBox>
+
+                        <!-- SUBTÍTULO CON CONTEXTO Y CONTEO DEL FILTRO ACTIVO -->
+                        <Label fx:id="lblInfoFiltroActivo" styleClass="filter-info-label" text="Mostrando todos los estudiantes" />
+
+                        <!-- SPLITPANE HORIZONTAL: ÁRBOL JERÁRQUICO (IZQ) Y TABLA (DER) -->
+                        <SplitPane dividerPositions="0.22" styleClass="custom-split-pane" VBox.vgrow="ALWAYS">
+                            <items>
+
+                                <!-- SECCIÓN 1 DEL ORGANIZADOR: ÁRBOL JERÁRQUICO PROGRAMA -> SEMESTRE -->
+                                <VBox maxWidth="290.0" minWidth="180.0" prefWidth="220.0" spacing="8.0" styleClass="organizer-sidebar-panel" SplitPane.resizableWithParent="false">
+                                    <padding>
+                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    </padding>
+                                    <children>
+                                        <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                            <children>
+                                                <Label styleClass="tree-header-title" text="Estructura Académica" />
+                                            </children>
+                                        </HBox>
+                                        <TreeView fx:id="treeOrganizador" styleClass="custom-tree-view" VBox.vgrow="ALWAYS" />
+                                    </children>
+                                </VBox>
+
+                                <!-- SECCIÓN 2 DEL ORGANIZADOR: TABLA DE ESTUDIANTES REACTIVA -->
+                                <VBox minWidth="420.0" spacing="8.0">
+                                    <padding>
+                                        <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+                                    </padding>
+                                    <children>
+                                        <TableView fx:id="tblEstudiantes" styleClass="custom-table-view" VBox.vgrow="ALWAYS">
+                                            <columns>
+                                                <TableColumn fx:id="colCodigo" minWidth="90.0" prefWidth="105.0" text="CÓDIGO" />
+                                                <TableColumn fx:id="colNombre" minWidth="170.0" prefWidth="220.0" text="NOMBRE COMPLETO" />
+                                                <TableColumn fx:id="colCarrera" minWidth="160.0" prefWidth="190.0" text="PROGRAMA ACADÉMICO" />
+                                                <TableColumn fx:id="colSemestre" minWidth="110.0" prefWidth="125.0" style="-fx-alignment: CENTER;" text="SEMESTRE" />
+                                                <TableColumn fx:id="colPromedio" minWidth="90.0" prefWidth="100.0" style="-fx-alignment: CENTER;" text="PROMEDIO" />
+                                                <TableColumn fx:id="colEstado" minWidth="100.0" prefWidth="115.0" style="-fx-alignment: CENTER;" text="ESTADO" />
+                                            </columns>
+                                            <columnResizePolicy>
+                                                <TableView fx:constant="UNCONSTRAINED_RESIZE_POLICY" />
+                                            </columnResizePolicy>
+                                        </TableView>
+                                    </children>
+                                </VBox>
+
+                            </items>
+                        </SplitPane>
+
+                        <!-- BARRA INFORMATIVA INFERIOR -->
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                            <children>
+                                <Label styleClass="table-hint" text="💡 Navegue por Programa y Semestre haciendo clic en el árbol jerárquico o en los selectores. Al hacer clic en un estudiante se cargarán sus datos para edición." />
+                            </children>
+                        </HBox>
+
+                    </children>
+                </VBox>
+
+            </children>
+        </HBox>
+    </center>
+
+</BorderPane>
